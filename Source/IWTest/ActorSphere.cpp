@@ -41,7 +41,6 @@ void AActorSphere::BeginPlay()
     BindToInput();
 
 
-    //UE_LOG(LogTemp, Warning, TEXT("loc  %d"), IsHovered);
 
 }
 
@@ -51,15 +50,17 @@ void AActorSphere::BeginPlay()
 void AActorSphere::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
+
+    AMyPawn* pawn = Cast<AMyPawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+
     if (CanRotate) {
 
         float dx, dy;
         GetWorld()->GetFirstPlayerController()->GetInputMouseDelta(dx, dy);
 
-        //FRotator NewRotation = FRotator(dy * -10, dx * -10, 0.f);
 
 
-        AMyPawn* pawn = Cast<AMyPawn>( UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
 
         pawn->YawCamera(dx);
@@ -67,7 +68,14 @@ void AActorSphere::Tick(float DeltaTime)
 
 
     }
+    
+    else { 
 
+        //avoids camera to spin around 
+
+        pawn->YawCamera(0);
+        pawn->PitchCamera(0);
+    }
 
 
 }
@@ -92,11 +100,7 @@ void AActorSphere::CustomOnBeginMouseOver(AActor* Actor)
 
 void AActorSphere::CustomOnEndMouseOver(AActor* Actor)
 {
-    if (GEngine)
-    {
-        GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Cyan, TEXT("Mouse Over"));
 
-    }
 
 
     AMyPlayerController* MyPc = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
@@ -117,7 +121,6 @@ void AActorSphere::RightClick() {
 
     if (IsHovered) {
 
-        GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Cyan, TEXT("onSphere to change r"));
 
         CanRotate = true;
     }
@@ -157,8 +160,6 @@ void AActorSphere::BindToInput()
     if (InputComponent)
     {
 
-        //InputComponent->BindAction("RightMouse", IE_Pressed, this, &AActorSphere::RightClick);
-       // InputComponent->BindAction("RightMouse", IE_Released, this, &AActorSphere::RightClickReleased);
 
         InputComponent->BindAxis("MouseWheel", this, &AActorSphere::Zoom);
 

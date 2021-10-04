@@ -1,0 +1,16 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{97FB15FE-49FD-1943-59E1-10B379B42C91}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "IWTest",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
+		}
+	]
+}

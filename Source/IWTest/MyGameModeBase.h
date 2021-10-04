@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class TEST_API AMyGameModeBase : public AGameModeBase
+class IWTEST_API AMyGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	

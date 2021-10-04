@@ -18,7 +18,7 @@ class UMaterialInstanceDynamic;
 
 
 UCLASS()
-class TEST_API AActorCube : public AActor
+class IWTEST_API AActorCube : public AActor
 {
 	GENERATED_BODY()
 	
@@ -75,6 +75,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = StaticMeshComponents)
 	UStaticMeshComponent* Mesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cubeposition")
+	FVector CenterLoc= FVector(0.f,200.f,0.f);
+
 	UStaticMesh* CylinderMesh;
 	UStaticMesh* ConeMesh;
 	UStaticMesh* CubeMesh;
@@ -89,6 +92,8 @@ protected:
 	bool ToggleSelfRotation = false;
 	bool ToggleRevolution = false;
 	bool ToggleHorizontalMov = false;
+	FVector2D MovementInput;
+	FVector newPos;
 
 	float IncreasingAngle = 1;
 

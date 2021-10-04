@@ -19,7 +19,7 @@
 
 
 UCLASS()
-class TEST_API AMyPawn : public APawn
+class IWTEST_API AMyPawn : public APawn
 {
 	GENERATED_BODY()
 

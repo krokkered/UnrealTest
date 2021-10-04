@@ -17,7 +17,7 @@ class UMaterialInstanceDynamic;
 
 
 UCLASS()
-class TEST_API AActorSphere : public AActor
+class IWTEST_API AActorSphere : public AActor
 {
 	GENERATED_BODY()
 
