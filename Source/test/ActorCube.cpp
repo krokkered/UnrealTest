@@ -78,104 +78,87 @@ void AActorCube::Tick(float DeltaTime)
 
     if (ToggleSelfRotation) {
 
-        AddActorLocalRotation(FRotator(3.f, 0.f, 0.f));
-
+         AddActorLocalRotation(FRotator(3.f, 0.f, 0.f));
+        //AddActorWorldRotation(FRotator(3.f, 0.f, 0.f));
     }
 
     FVector CurrentLoc = GetActorLocation();
-   // IncreasingAngle = FMath::Fmod(IncreasingAngle + (40 * DeltaTime), 360);
-    //if (IncreasingAngle > 360) IncreasingAngle = 1;
 
-
-   // int rx, ry;
-
-        /* IncreasingAngle += DeltaTime * 50;
-
-        if (IncreasingAngle > 360) IncreasingAngle = 1;
-
-        FVector CurrentLoc = GetActorLocation();
-
-
-        FVector SphereLoc = FVector(0, 200, 0); //where the sphere is, 
-
-        FVector NewLoc = FVector(0, 200, 0); //center of rotation
-        
-        float radius = FMath::Sqrt(FMath::Square(NewLoc.X -CurrentLoc.X     ) + FMath::Square(NewLoc.Y - CurrentLoc.Y) );
-
-
-
-        GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Green, FString::Printf(TEXT("radius %f"), radius));
-
-
-        FVector RotateValue = FVector(radius, 0, 0).RotateAngleAxis(IncreasingAngle, FVector(0, 0, 1));
-
-        NewLoc.X += RotateValue.X;
-        NewLoc.Y += RotateValue.Y;
-        NewLoc.Z += RotateValue.Z+ CurrentLoc.Z;
-
-
-
-    //    ry = FMath::Sin(IncreasingAngle*50) * r;
-      //  rx = FMath::Cos(IncreasingAngle*50) * r;
-
-        
-
-        SetActorLocation(NewLoc);
-        */
  
     //GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Green, FString::Printf(TEXT("Location %s"), *GetActorLocation().ToString()));
     //UE_LOG(LogTemp, Warning, TEXT("loc  %f %f %f"), CurrentLoc.X, CurrentLoc.Y);
 
-        FVector NewLoc = FVector(0, 200, 0); //center of rotation
-
-        //if (radius < 50) radius = 60;
-        //radius = 200;
-      //  GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Green, FString::Printf(TEXT("radius %f"), radius));
+        FVector CenterLoc = FVector(0, 200, 0); //center of rotation
 
 
 
 
 
-     /* if (!(ToggleRevolution)) {
-
-            float angolo2 =FGenericPlatformMath::Atan2(CurrentLoc.X , CurrentLoc.Y);
-            float angolo = FGenericPlatformMath::Atan(CurrentLoc.X/ CurrentLoc.Y);
-
-                GEngine->AddOnScreenDebugMessage(-1, 20, FColor::Green, FString::Printf(TEXT("arctan %f"), FMath::RadiansToDegrees<float>(angolo)));
-
-            GEngine->AddOnScreenDebugMessage(-1, 20, FColor::Green, FString::Printf(TEXT("arcta2n %f"), angolo2));
-
-            IncreasingAngle = FMath::RadiansToDegrees<float>(angolo2);
-            //IncreasingAngle = FMath::Fmod(IncreasingAngle + (40 * DeltaTime), 360);
 
 
-            SetActorLocation
-        }
-        */
 
-       //  GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Green, FString::Printf(TEXT("angolorot %f"), IncreasingAngle));
+        //float radius = FMath::Sqrt(FMath::Square(CurrentLoc.X - NewLoc.X) + FMath::Square(CurrentLoc.Y - NewLoc.Y));
 
-
-    if (ToggleRevolution ) {
-
-        float radius = FMath::Sqrt(FMath::Square(CurrentLoc.X - NewLoc.X) + FMath::Square(CurrentLoc.Y - NewLoc.Y));
-
-        float CurrentValueInRadians = FMath::DegreesToRadians<float>(IncreasingAngle);
-
-        IncreasingAngle = FMath::Fmod(IncreasingAngle + (40 * DeltaTime), 360);
-        if (IncreasingAngle > 360) IncreasingAngle = 1;
-        float angolo2 = FGenericPlatformMath::Atan2(CurrentLoc.X, CurrentLoc.Y);
-        float angolo = FGenericPlatformMath::Atan(CurrentLoc.X / CurrentLoc.Y);
+     //  GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Green, FString::Printf(TEXT("pv %f %f"), previousPos.X, previousPos.Y));
 
 
-        SetActorLocation(FVector(radius * FMath::Cos(CurrentValueInRadians) + NewLoc.X, radius * FMath::Sin(CurrentValueInRadians) + NewLoc.Y, CurrentLoc.Z + NewLoc.Z));
+        //float CurrentValueInRadians = FMath::DegreesToRadians<float>(IncreasingAngle);
+
+        //IncreasingAngle = FMath::Fmod(IncreasingAngle + (40 * DeltaTime), 360);
+        //if (IncreasingAngle > 360) IncreasingAngle = 1;
+
+        //FVector newPos = FVector(radius * FMath::Cos(CurrentValueInRadians) + NewLoc.X, radius * FMath::Sin(CurrentValueInRadians) + NewLoc.Y, CurrentLoc.Z + NewLoc.Z);
+
+        float angle = DeltaTime * 2;
+
+
+        //formulas to rotate the point arount a center of rotation
+        newPos.X = ((CurrentLoc.X - CenterLoc.X) * FMath::Cos(angle)) - ((CurrentLoc.Y - CenterLoc.Y) * FMath::Sin(angle))  + CenterLoc.X;
+        newPos.Y = ((CurrentLoc.Y - CenterLoc.Y) * FMath::Cos(angle)) + ((CurrentLoc.X- CenterLoc.X) * FMath::Sin(angle))+ CenterLoc.Y;
+        newPos.Z = CurrentLoc.Z;
+
+
+
+        ///newPos.X = FMath::Clamp<float>(newPos.X, previousPos.X -15, previousPos.X+15);
+       // newPos.Y= FMath::Clamp<float>(newPos.Y, previousPos.Y - 15, previousPos.Y + 15);
+
+    if (ToggleRevolution  && MovementInput.IsZero()) {
+
+
+
+
+
+
+
+        //cube facing the spehre
+        FRotator NewRotation =  FRotator(0, IncreasingAngle, 0);
+
+        FQuat QuatRotation = FQuat(NewRotation);// *FQuat(FRotator(GetActorRotation().Pitch, 0, 0));
+        
+        //AddActorLocalRotation(FRotator(0.f, FMath::RadiansToDegrees<float>(angle), 0.f));
+        AddActorWorldRotation(FRotator(0.f, FMath::RadiansToDegrees<float>(angle), 0.f));
+
+
+
+        SetActorLocation(newPos, false, 0, ETeleportType::None);
+
+        
+
 
        // GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Green, FString::Printf(TEXT("angolorot %f"), IncreasingAngle));
     }
         
+    if (!MovementInput.IsZero())
+    {
 
+        //MovementInput = MovementInput.GetSafeNormal() * 100.0f;
+        MovementInput *= 30.0f;
+        FVector NewLocation = GetActorLocation();
+        NewLocation += FVector(MovementInput.X * DeltaTime, MovementInput.Y * DeltaTime ,0.0f);
+        SetActorLocation(NewLocation);
+
+    }
     
-
 
 }
 
@@ -310,7 +293,6 @@ void AActorCube::MoveForward(float amount) {
    // AddActorLocalOffset(FVector(0.f, 0.f, amount));
 
 
-
 }
 
 
@@ -320,7 +302,11 @@ void AActorCube::MoveRight(float amount) {
     //AddActorWorldOffset(FVector(0.f, amount, 0.f));
     //FVector CL = GetActorLocation();
     //SetActorLocation(FVector(CL.X, CL.Y+amount, CL.Z));
-    AddActorLocalOffset(FVector(0.f, amount, 0.f));
+   
+    //AddActorLocalOffset(FVector(0.f, amount, 0.f));
+
+
+    MovementInput.Y = amount ;//FMath::Clamp<float>(amount, -1.0f, 1.0f);
 
 }
 
@@ -382,8 +368,8 @@ void AActorCube::BindToInput()
           InputComponent->BindAction("RevolutionAroundSphere", IE_Released, this, &AActorCube::Revolution);
           InputComponent->BindAction("SelfRotation", IE_Released, this, &AActorCube::SelfRotate);
 
-          InputComponent->BindAction("checkHorizontalMovement", IE_Pressed, this, &AActorCube::checkHorizontalMovPressed);
-          InputComponent->BindAction("checkHorizontalMovement", IE_Released, this, &AActorCube::checkHorizontalMovReleased);
+         // InputComponent->BindAction("checkHorizontalMovement", IE_Pressed, this, &AActorCube::checkHorizontalMovPressed);
+        //  InputComponent->BindAction("checkHorizontalMovement", IE_Released, this, &AActorCube::checkHorizontalMovReleased);
 
 
 
