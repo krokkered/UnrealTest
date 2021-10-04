@@ -27,13 +27,12 @@ AMyPawn::AMyPawn()
     SpringArmComp->SetupAttachment(StaticMeshComp);
     CameraComp->SetupAttachment(SpringArmComp, USpringArmComponent::SocketName);
 
-    //Assign SpringArm class variables.
 
     //initial camera position
-    SpringArmComp->SetRelativeLocationAndRotation(FVector(-450.0f, 0.0f, 100.0f), FRotator(0.0f, 0.0f, 0.0f));
+    SpringArmComp->SetRelativeLocationAndRotation(FVector(-450.0f, 0.0f, 20.0f), FRotator(0.0f, 0.0f, 0.0f));
 
     
-    SpringArmComp->TargetArmLength = 10.f;
+    SpringArmComp->TargetArmLength = 100.0f;
    // SpringArmComp->bEnableCameraLag = true;
     //SpringArmComp->CameraLagSpeed = 3.0f;
 
@@ -53,25 +52,20 @@ void AMyPawn::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
-
     
     {
 
-       
-        
+  
         FRotator NewRotation = GetActorRotation();
         NewRotation.Yaw += CameraInput.X;
-
         SetActorRotation(NewRotation);
         
 
 
     }
 
-    //Rotate our camera's pitch, but limit it so we're always looking downward
     {
         FRotator NewRotation = SpringArmComp->GetComponentRotation();
-       // NewRotation.Pitch = FMath::Clamp(NewRotation.Pitch + CameraInput.Y, -80.0f, -15.0f);
         NewRotation.Pitch += CameraInput.Y;
         SetActorRotation(NewRotation);
 
@@ -121,49 +115,3 @@ void AMyPawn::ZoomOut()
 }
 
 
-
-/*
-
-void AMyPawn::RotateX(float AxisValue)
-{
-
-
-
-    /*
-    if ((AxisValue != 0.0f))
-    {
-
-        GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Cyan, TEXT("start camera rogtation"));
-
-        // Find out which way is forward
-        const FRotator Rotation = Controller->GetControlRotation();
-        const FRotator YawRotation(0, Rotation.Yaw, 0);
-
-        // Get forward vector
-        const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-        AddMovementInput(Direction, AxisValue *20);
-
-        AddControllerYawInput(AxisValue * 30);
-    }
-    
-}
-
-void AMyPawn::RotateY(float AxisValue)
-{
-    if ((AxisValue != 0.0f))
-    {
-        // Find out which way is right
-        const FRotator Rotation = Controller->GetControlRotation();
-        const FRotator YawRotation(0, Rotation.Yaw, 0);
-
-        // Get right vector 
-        const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-        // Add movement in that direction
-        AddMovementInput(Direction, AxisValue);
-    }
-}
-
-*/
-
-
-//Input functions

@@ -19,7 +19,7 @@
  * 
  */
 UCLASS()
-class TEST_API AMyPlayerController : public APlayerController
+class IWTEST_API AMyPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
@@ -38,13 +38,6 @@ public:
 protected:
 	TArray<AActor*> FoundActorSpheres;
 	TArray<AActor*> FoundActorCubes;
-//private:
-//	AActor* ActorSphereRef;
-	//AActor* ActorCubeRef;
-
-	//AActorSphere* ActorSphereRef;
-
-	//void LeftAction();
 
 };
 
